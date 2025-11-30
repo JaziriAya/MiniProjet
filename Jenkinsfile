@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven.4.0'
-        jdk 'openjdk version 17'
+        // Utilisez le NOM EXACT configuré dans Jenkins
+        maven 'maven'                    // ou le nom exact que vous voyez
+        jdk 'jdk17'                      // ou le nom exact que vous voyez
     }
 
     stages {
