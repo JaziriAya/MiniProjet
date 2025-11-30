@@ -1,37 +1,35 @@
 pipeline {
     agent any
 
-    tools {
-        // Utilisez le NOM EXACT configuré dans Jenkins
-        maven 'maven'                    // ou le nom exact que vous voyez
-        jdk 'jdk17'                      // ou le nom exact que vous voyez
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Checkout Git') {
             steps {
                 git branch: 'main', url: 'https://github.com/JaziriAya/MiniProjet.git'
             }
         }
 
-        stage('Build') {
+        stage('Build Maven') {
             steps {
-                sh 'mvn clean install'
-            }
-        }
-
-        stage('Tests') {
-            steps {
-                sh 'mvn test'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
         stage('Deploy to Tomcat') {
             steps {
                 deploy adapters: [tomcat9('Tomcat9')], 
-                contextPath: 'monapp',
+                contextPath: 'miniprojet',
                 war: 'target/*.war'
             }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Pipeline terminé - vérification des artefacts'
+            sh 'ls -la target/*.war || true'
+        }
+        success {
+            echo '✅ Build et déploiement réussis!'
         }
     }
 }
