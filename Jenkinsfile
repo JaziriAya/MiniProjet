@@ -29,7 +29,7 @@ pipeline {
             sh 'ls -la target/*.war || true'
         }
         success {
-            echo '✅ Build et déploiement réussis!'
+            echo ' Build et déploiement réussis!'
         }
     }
 }
